@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">OMO Manager</string>
+    <string name="dual_pane_desc">Dual-pane file browser</string>
+    <string name="script_runner">Script Runner</string>
+    <string name="text_editor">Text Editor</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="search">Search</string>
+    <string name="run_script">Run Script</string>
+    <string name="stop_script">Stop</string>
+    <string name="copy">Copy</string>
+    <string name="move">Move</string>
+    <string name="delete">Delete</string>
+    <string name="rename">Rename</string>
+    <string name="properties">Properties</string>
+    <string name="new_folder">New Folder</string>
+    <string name="new_file">New File</string>
+    <string name="select_all">Select All</string>
+    <string name="sync_panes">Sync Panes</string>
+    <string name="go_up">Go Up</string>
+    <string name="root_access">Root Access</string>
+    <string name="grant_root">Grant Root</string>
+    <string name="no_root">No Root Access</string>
+    <string name="left_pane">Left</string>
+    <string name="right_pane">Right</string>
+    <string name="path_hint">Enter path…</string>
+    <string name="script_hint">Enter shell script…</string>
+    <string name="output">Output</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="permission_denied">Permission Denied</string>
+    <string name="file_exists">File already exists</string>
+    <string name="operation_failed">Operation failed</string>
+    <string name="copied">Copied</string>
+    <string name="moved">Moved</string>
+    <string name="deleted">Deleted</string>
+    <string name="renamed">Renamed</string>
+    <string name="data_adb">/data/adb/</string>
+    <string name="add_bookmark">Add Bookmark</string>
+    <string name="remove_bookmark">Remove Bookmark</string>
+    <string name="open_with">Open With</string>
+    <string name="execute">Execute</string>
+    <string name="edit">Edit</string>
+</resources>
