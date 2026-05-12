@@ -168,21 +168,21 @@ pub extern "system" fn Java_com_omo_manager_native_RustBridge_copyFile(
 ) -> jboolean {
     let src_str = match env.get_string(&src) {
         Ok(s) => s.into(),
-        Err(_) => return 0,
+        Err(_) => return 0 as jboolean,
     };
     let dst_str = match env.get_string(&dst) {
         Ok(s) => s.into(),
-        Err(_) => return 0,
+        Err(_) => return 0 as jboolean,
     };
 
     if use_root != 0 {
         let cmd = format!("cp -rp \"{}\" \"{}\"", src_str, dst_str);
         let (_, success) = run_as_root(&cmd);
-        if success { 1 } else { 0 }
+        if success { 1 as jboolean } else { 0 as jboolean }
     } else {
         match fs::copy(&*src_str, &*dst_str) {
-            Ok(_) => 1,
-            Err(_) => 0,
+            Ok(_) => 1 as jboolean,
+            Err(_) => 0 as jboolean,
         }
     }
 }
@@ -197,21 +197,21 @@ pub extern "system" fn Java_com_omo_manager_native_RustBridge_moveFile(
 ) -> jboolean {
     let src_str = match env.get_string(&src) {
         Ok(s) => s.into(),
-        Err(_) => return 0,
+        Err(_) => return 0 as jboolean,
     };
     let dst_str = match env.get_string(&dst) {
         Ok(s) => s.into(),
-        Err(_) => return 0,
+        Err(_) => return 0 as jboolean,
     };
 
     if use_root != 0 {
         let cmd = format!("mv \"{}\" \"{}\"", src_str, dst_str);
         let (_, success) = run_as_root(&cmd);
-        if success { 1 } else { 0 }
+        if success { 1 as jboolean } else { 0 as jboolean }
     } else {
         match fs::rename(&*src_str, &*dst_str) {
-            Ok(_) => 1,
-            Err(_) => 0,
+            Ok(_) => 1 as jboolean,
+            Err(_) => 0 as jboolean,
         }
     }
 }
@@ -225,13 +225,13 @@ pub extern "system" fn Java_com_omo_manager_native_RustBridge_deleteFile(
 ) -> jboolean {
     let path_str = match env.get_string(&path) {
         Ok(s) => s.into(),
-        Err(_) => return 0,
+        Err(_) => return 0 as jboolean,
     };
 
     if use_root != 0 {
         let cmd = format!("rm -rf \"{}\"", path_str);
         let (_, success) = run_as_root(&cmd);
-        if success { 1 } else { 0 }
+        if success { 1 as jboolean } else { 0 as jboolean }
     } else {
         let path = Path::new(&*path_str);
         if path.is_dir() {
@@ -252,17 +252,17 @@ pub extern "system" fn Java_com_omo_manager_native_RustBridge_renameFile(
 ) -> jboolean {
     let old_str = match env.get_string(&old_path) {
         Ok(s) => s.into(),
-        Err(_) => return 0,
+        Err(_) => return 0 as jboolean,
     };
     let new_str = match env.get_string(&new_path) {
         Ok(s) => s.into(),
-        Err(_) => return 0,
+        Err(_) => return 0 as jboolean,
     };
 
     if use_root != 0 {
         let cmd = format!("mv \"{}\" \"{}\"", old_str, new_str);
         let (_, success) = run_as_root(&cmd);
-        if success { 1 } else { 0 }
+        if success { 1 as jboolean } else { 0 as jboolean }
     } else {
         fs::rename(&*old_str, &*new_str).is_ok() as jboolean
     }
@@ -277,13 +277,13 @@ pub extern "system" fn Java_com_omo_manager_native_RustBridge_createDirectory(
 ) -> jboolean {
     let path_str = match env.get_string(&path) {
         Ok(s) => s.into(),
-        Err(_) => return 0,
+        Err(_) => return 0 as jboolean,
     };
 
     if use_root != 0 {
         let cmd = format!("mkdir -p \"{}\"", path_str);
         let (_, success) = run_as_root(&cmd);
-        if success { 1 } else { 0 }
+        if success { 1 as jboolean } else { 0 as jboolean }
     } else {
         fs::create_dir_all(&*path_str).is_ok() as jboolean
     }
@@ -298,13 +298,13 @@ pub extern "system" fn Java_com_omo_manager_native_RustBridge_createFile(
 ) -> jboolean {
     let path_str = match env.get_string(&path) {
         Ok(s) => s.into(),
-        Err(_) => return 0,
+        Err(_) => return 0 as jboolean,
     };
 
     if use_root != 0 {
         let cmd = format!("touch \"{}\"", path_str);
         let (_, success) = run_as_root(&cmd);
-        if success { 1 } else { 0 }
+        if success { 1 as jboolean } else { 0 as jboolean }
     } else {
         fs::File::create(&*path_str).is_ok() as jboolean
     }
@@ -352,17 +352,17 @@ pub extern "system" fn Java_com_omo_manager_native_RustBridge_setFilePermissions
 ) -> jboolean {
     let path_str = match env.get_string(&path) {
         Ok(s) => s.into(),
-        Err(_) => return 0,
+        Err(_) => return 0 as jboolean,
     };
     let mode_str = match env.get_string(&mode) {
         Ok(s) => s.into(),
-        Err(_) => return 0,
+        Err(_) => return 0 as jboolean,
     };
 
     if use_root != 0 {
         let cmd = format!("chmod {} \"{}\"", mode_str, path_str);
         let (_, success) = run_as_root(&cmd);
-        if success { 1 } else { 0 }
+        if success { 1 as jboolean } else { 0 as jboolean }
     } else {
         let mode_int: u32 = mode_str.parse().unwrap_or(0o644);
         match fs::metadata(&*path_str) {
@@ -410,22 +410,22 @@ pub extern "system" fn Java_com_omo_manager_native_RustBridge_writeTextFile(
 ) -> jboolean {
     let path_str = match env.get_string(&path) {
         Ok(s) => s.into(),
-        Err(_) => return 0,
+        Err(_) => return 0 as jboolean,
     };
     let content_str = match env.get_string(&content) {
         Ok(s) => s.into(),
-        Err(_) => return 0,
+        Err(_) => return 0 as jboolean,
     };
 
     if use_root != 0 {
         let escaped = content_str.replace('\'', "'\\''");
         let cmd = format!("echo -n '{}' > \"{}\"", escaped, path_str);
         let (_, success) = run_as_root(&cmd);
-        if success { 1 } else { 0 }
+        if success { 1 as jboolean } else { 0 as jboolean }
     } else {
         match fs::write(&*path_str, &*content_str) {
-            Ok(_) => 1,
-            Err(_) => 0,
+            Ok(_) => 1 as jboolean,
+            Err(_) => 0 as jboolean,
         }
     }
 }
@@ -443,9 +443,9 @@ pub extern "system" fn Java_com_omo_manager_native_RustBridge_checkRootAccess(
     match output {
         Ok(out) => {
             let stdout = String::from_utf8_lossy(&out.stdout);
-            if stdout.contains("uid=0") { 1 } else { 0 }
+            if stdout.contains("uid=0") { 1 as jboolean } else { 0 as jboolean }
         }
-        Err(_) => 0,
+        Err(_) => 0 as jboolean,
     }
 }
 
