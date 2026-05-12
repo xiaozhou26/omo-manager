@@ -39,7 +39,7 @@ pub extern "system" fn Java_com_omo_manager_native_RustBridge_listDirectory(
     path: JString,
     use_root: jboolean,
 ) -> jobjectArray {
-    let path_str = match env.get_string(&path) {
+    let path_str: String = match env.get_string(&path) {
         Ok(s) => s.into(),
         Err(_) => return std::ptr::null_mut(),
     };
@@ -66,6 +66,7 @@ pub extern "system" fn Java_com_omo_manager_native_RustBridge_listDirectory(
                         .map(|m| format!("{:o}", m.permissions().mode() & 0o777))
                         .unwrap_or_else(|_| "644".to_string());
                     let modified = entry.metadata()
+                        .ok()
                         .and_then(|m| m.modified().ok())
                         .map(|t| {
                             let secs = t.duration_since(UNIX_EPOCH)
@@ -130,7 +131,7 @@ pub extern "system" fn Java_com_omo_manager_native_RustBridge_executeScript(
     script: JString,
     use_root: jboolean,
 ) -> jstring {
-    let script_str = match env.get_string(&script) {
+    let script_str: String = match env.get_string(&script) {
         Ok(s) => s.into(),
         Err(_) => return make_java_string!(env, "Error: Invalid script string"),
     };
@@ -166,11 +167,11 @@ pub extern "system" fn Java_com_omo_manager_native_RustBridge_copyFile(
     dst: JString,
     use_root: jboolean,
 ) -> jboolean {
-    let src_str = match env.get_string(&src) {
+    let src_str: String = match env.get_string(&src) {
         Ok(s) => s.into(),
         Err(_) => return 0 as jboolean,
     };
-    let dst_str = match env.get_string(&dst) {
+    let dst_str: String = match env.get_string(&dst) {
         Ok(s) => s.into(),
         Err(_) => return 0 as jboolean,
     };
@@ -195,11 +196,11 @@ pub extern "system" fn Java_com_omo_manager_native_RustBridge_moveFile(
     dst: JString,
     use_root: jboolean,
 ) -> jboolean {
-    let src_str = match env.get_string(&src) {
+    let src_str: String = match env.get_string(&src) {
         Ok(s) => s.into(),
         Err(_) => return 0 as jboolean,
     };
-    let dst_str = match env.get_string(&dst) {
+    let dst_str: String = match env.get_string(&dst) {
         Ok(s) => s.into(),
         Err(_) => return 0 as jboolean,
     };
@@ -223,7 +224,7 @@ pub extern "system" fn Java_com_omo_manager_native_RustBridge_deleteFile(
     path: JString,
     use_root: jboolean,
 ) -> jboolean {
-    let path_str = match env.get_string(&path) {
+    let path_str: String = match env.get_string(&path) {
         Ok(s) => s.into(),
         Err(_) => return 0 as jboolean,
     };
@@ -250,11 +251,11 @@ pub extern "system" fn Java_com_omo_manager_native_RustBridge_renameFile(
     new_path: JString,
     use_root: jboolean,
 ) -> jboolean {
-    let old_str = match env.get_string(&old_path) {
+    let old_str: String = match env.get_string(&old_path) {
         Ok(s) => s.into(),
         Err(_) => return 0 as jboolean,
     };
-    let new_str = match env.get_string(&new_path) {
+    let new_str: String = match env.get_string(&new_path) {
         Ok(s) => s.into(),
         Err(_) => return 0 as jboolean,
     };
@@ -275,7 +276,7 @@ pub extern "system" fn Java_com_omo_manager_native_RustBridge_createDirectory(
     path: JString,
     use_root: jboolean,
 ) -> jboolean {
-    let path_str = match env.get_string(&path) {
+    let path_str: String = match env.get_string(&path) {
         Ok(s) => s.into(),
         Err(_) => return 0 as jboolean,
     };
@@ -296,7 +297,7 @@ pub extern "system" fn Java_com_omo_manager_native_RustBridge_createFile(
     path: JString,
     use_root: jboolean,
 ) -> jboolean {
-    let path_str = match env.get_string(&path) {
+    let path_str: String = match env.get_string(&path) {
         Ok(s) => s.into(),
         Err(_) => return 0 as jboolean,
     };
@@ -317,7 +318,7 @@ pub extern "system" fn Java_com_omo_manager_native_RustBridge_getFilePermissions
     path: JString,
     use_root: jboolean,
 ) -> jstring {
-    let path_str = match env.get_string(&path) {
+    let path_str: String = match env.get_string(&path) {
         Ok(s) => s.into(),
         Err(_) => return make_java_string!(env, ""),
     };
@@ -350,11 +351,11 @@ pub extern "system" fn Java_com_omo_manager_native_RustBridge_setFilePermissions
     mode: JString,
     use_root: jboolean,
 ) -> jboolean {
-    let path_str = match env.get_string(&path) {
+    let path_str: String = match env.get_string(&path) {
         Ok(s) => s.into(),
         Err(_) => return 0 as jboolean,
     };
-    let mode_str = match env.get_string(&mode) {
+    let mode_str: String = match env.get_string(&mode) {
         Ok(s) => s.into(),
         Err(_) => return 0 as jboolean,
     };
@@ -371,7 +372,7 @@ pub extern "system" fn Java_com_omo_manager_native_RustBridge_setFilePermissions
                 perms.set_mode(mode_int);
                 fs::set_permissions(&*path_str, perms).is_ok() as jboolean
             }
-            Err(_) => 0,
+            Err(_) => 0 as jboolean,
         }
     }
 }
@@ -383,7 +384,7 @@ pub extern "system" fn Java_com_omo_manager_native_RustBridge_readTextFile(
     path: JString,
     use_root: jboolean,
 ) -> jstring {
-    let path_str = match env.get_string(&path) {
+    let path_str: String = match env.get_string(&path) {
         Ok(s) => s.into(),
         Err(_) => return make_java_string!(env, ""),
     };
@@ -408,11 +409,11 @@ pub extern "system" fn Java_com_omo_manager_native_RustBridge_writeTextFile(
     content: JString,
     use_root: jboolean,
 ) -> jboolean {
-    let path_str = match env.get_string(&path) {
+    let path_str: String = match env.get_string(&path) {
         Ok(s) => s.into(),
         Err(_) => return 0 as jboolean,
     };
-    let content_str = match env.get_string(&content) {
+    let content_str: String = match env.get_string(&content) {
         Ok(s) => s.into(),
         Err(_) => return 0 as jboolean,
     };
@@ -456,7 +457,7 @@ pub extern "system" fn Java_com_omo_manager_native_RustBridge_executeScriptWithO
     script_path: JString,
     use_root: jboolean,
 ) -> jstring {
-    let script_path_str = match env.get_string(&script_path) {
+    let script_path_str: String = match env.get_string(&script_path) {
         Ok(s) => s.into(),
         Err(_) => return make_java_string!(env, r#"{"output": "Invalid path", "success": false}"#),
     };
